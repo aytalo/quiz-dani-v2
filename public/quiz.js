@@ -5,7 +5,8 @@
 const QUIZ = [
   {
     intro: [
-      'Oi! 😊 Já respondi pra mais de *1.247 mulheres essa semana* — sua vez 👇 (5 perguntas rápidas e libero acesso ao meu app + *FICHAS DOURADAS* 🪙)',
+      'Oi! Eu sou a *Dani* 🎡 — vivo de roleta há 3 anos e ajudo quem joga no feeling a parar de queimar banca.',
+      'Bora? São 5 perguntas rápidas pra eu entender seu jogo — no final libero meu app + *FICHAS DOURADAS* pra você começar sem usar seu dinheiro. 🪙',
     ],
     question: '*1/5 — Me conta:* quando você senta pra jogar roleta, o que você faz ANTES de apostar a primeira ficha?',
     options: [

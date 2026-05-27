@@ -1,0 +1,344 @@
+:root {
+  --dani-red: #e11d48;
+  --dani-gold: #d97706;
+  --bubble-me: #d9fdd3;
+  --bubble-other: #ffffff;
+  --text-dark: #111b21;
+  --text-muted: #667781;
+  --header-bg: #008069;
+  --chat-bg: #0b1014;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; width: 100%; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+}
+
+/* O mockup OCUPA toda a viewport sempre */
+.phone {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+/* status bar fake */
+.phone-status {
+  background: var(--header-bg);
+  color: #fff;
+  padding: max(8px, env(safe-area-inset-top, 8px)) 24px 4px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  font-size: 13px; font-weight: 600;
+  min-height: 36px;
+}
+.status-time { font-variant-numeric: tabular-nums; }
+.status-icons { display: flex; gap: 5px; align-items: center; opacity: 0.95; }
+
+/* header WhatsApp */
+.phone-header {
+  background: var(--header-bg);
+  color: #fff;
+  padding: 6px 10px 10px;
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.phone-header .back, .phone-header .call {
+  background: transparent; border: none; color: #fff;
+  font-size: 26px; font-weight: 300; padding: 4px 6px;
+  cursor: pointer;
+}
+.contact { display: flex; align-items: center; gap: 10px; flex: 1; }
+.avatar {
+  position: relative;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--dani-red), var(--dani-gold));
+  display: flex; align-items: center; justify-content: center;
+}
+.avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.avatar-fallback {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 800; font-size: 20px;
+  background: linear-gradient(135deg, var(--dani-red), var(--dani-gold));
+}
+.online-dot {
+  position: absolute; bottom: 0; right: 0;
+  width: 11px; height: 11px;
+  background: #4ade80;
+  border-radius: 50%;
+  border: 2px solid var(--header-bg);
+  z-index: 2;
+}
+.contact-info { flex: 1; min-width: 0; }
+.contact-name { font-weight: 600; font-size: 16px; }
+.contact-status { font-size: 12px; opacity: 0.85; transition: opacity 0.3s; }
+
+/* chat area */
+.chat {
+  flex: 1;
+  background:
+    linear-gradient(rgba(11, 16, 20, 0.92), rgba(11, 16, 20, 0.92)),
+    repeating-linear-gradient(45deg, transparent 0 12px, rgba(255,255,255,0.02) 12px 13px);
+  padding: 12px 10px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  display: flex; flex-direction: column; gap: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+.chat::-webkit-scrollbar { width: 4px; }
+.chat::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+.day-divider { display: flex; justify-content: center; margin: 6px 0 10px; }
+.day-divider span {
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+  padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 500;
+}
+
+/* bolhas */
+.bubble {
+  max-width: 78%;
+  padding: 8px 10px 4px;
+  border-radius: 8px;
+  position: relative;
+  font-size: 14.5px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  animation: bubble-in 0.3s ease-out;
+  box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+}
+@keyframes bubble-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.bubble.other {
+  align-self: flex-start;
+  background: var(--bubble-other); color: var(--text-dark);
+  border-top-left-radius: 0;
+}
+.bubble.me {
+  align-self: flex-end;
+  background: var(--bubble-me); color: var(--text-dark);
+  border-top-right-radius: 0;
+}
+.bubble .text { white-space: pre-wrap; }
+.bubble .meta {
+  display: flex; gap: 4px; align-items: center;
+  font-size: 10.5px; color: var(--text-muted);
+  justify-content: flex-end; margin-top: 2px;
+}
+.bubble .meta .ticks { color: #53bdeb; font-size: 14px; line-height: 1; }
+
+/* bolha de vídeo (estilo WhatsApp) */
+.bubble.video {
+  padding: 4px 4px 4px;
+  max-width: 80%;
+}
+.bubble.video .video-wrap {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+  line-height: 0;
+}
+.bubble.video video {
+  width: 100%;
+  max-width: 320px;
+  max-height: 70vh;
+  display: block;
+  background: #000;
+  border-radius: 6px;
+  object-fit: cover;
+  pointer-events: none; /* TODO clique vai pro overlay — nunca expõe controles nativos */
+  -webkit-tap-highlight-color: transparent;
+}
+/* esconde quaisquer controles nativos que algum navegador insistir em mostrar */
+.bubble.video video::-webkit-media-controls,
+.bubble.video video::-webkit-media-controls-panel,
+.bubble.video video::-webkit-media-controls-play-button,
+.bubble.video video::-webkit-media-controls-start-playback-button,
+.bubble.video video::-webkit-media-controls-enclosure,
+.bubble.video video::-webkit-media-controls-overlay-play-button,
+.bubble.video video::-webkit-media-controls-fullscreen-button,
+.bubble.video video::-webkit-media-controls-timeline,
+.bubble.video video::-webkit-media-controls-current-time-display,
+.bubble.video video::-webkit-media-controls-time-remaining-display,
+.bubble.video video::-webkit-media-controls-mute-button,
+.bubble.video video::-webkit-media-controls-toggle-closed-captions-button,
+.bubble.video video::-webkit-media-controls-volume-slider,
+.bubble.video video::-internal-media-controls-overflow-button,
+.bubble.video video::-internal-media-controls-download-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.bubble.video .video-tap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+  z-index: 5;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.bubble.video .video-tap-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.32);
+  animation: tap-pulse 1.6s ease-in-out infinite;
+}
+.bubble.video .video-tap.playing .video-tap-prompt {
+  display: none;
+}
+.bubble.video .video-tap-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  padding-left: 4px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+.bubble.video .video-tap-label {
+  background: rgba(0, 0, 0, 0.78);
+  border-radius: 22px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+@keyframes tap-pulse {
+  0%, 100% { background: rgba(0, 0, 0, 0.32); }
+  50% { background: rgba(0, 0, 0, 0.48); }
+}
+.bubble.video .text.caption {
+  padding: 6px 8px 0;
+  font-size: 13.5px;
+  white-space: pre-wrap;
+}
+.bubble.video .meta {
+  padding: 0 8px 2px;
+}
+
+/* typing indicator */
+.typing {
+  align-self: flex-start;
+  background: var(--bubble-other);
+  padding: 12px 14px;
+  border-radius: 8px;
+  border-top-left-radius: 0;
+  display: flex; gap: 4px;
+  box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+}
+.typing span {
+  width: 7px; height: 7px;
+  background: #aaa;
+  border-radius: 50%;
+  animation: typing-bounce 1.4s infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* opções */
+.options {
+  display: flex; flex-direction: column; gap: 6px;
+  align-self: flex-end; max-width: 88%;
+  margin-top: 4px;
+  animation: bubble-in 0.4s ease-out;
+}
+.option-btn {
+  background: rgba(255,255,255,0.95);
+  color: var(--text-dark);
+  padding: 11px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.05);
+  font-size: 14px; font-family: inherit; font-weight: 500;
+  cursor: pointer; text-align: left; line-height: 1.35;
+  transition: all 0.18s;
+}
+.option-btn:hover { background: var(--bubble-me); transform: translateY(-1px); }
+.option-btn:active { transform: scale(0.97); }
+.option-btn.disabled { pointer-events: none; opacity: 0.45; }
+.option-btn.picked { background: var(--bubble-me); border-color: rgba(0,0,0,0.12); }
+
+/* CTA */
+.cta-btn {
+  align-self: stretch;
+  margin: 8px 12px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, var(--dani-red), var(--dani-gold));
+  color: #fff;
+  border: none; border-radius: 16px;
+  font-family: inherit; font-size: 15px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  box-shadow: 0 8px 24px rgba(225, 29, 72, 0.4);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  animation: bubble-in 0.4s ease-out, pulse-glow 2s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 8px 24px rgba(225, 29, 72, 0.4); }
+  50% { box-shadow: 0 8px 32px rgba(225, 29, 72, 0.7); }
+}
+
+/* input falso */
+.phone-input {
+  background: #1e2428;
+  padding: 8px 10px max(8px, env(safe-area-inset-bottom, 8px));
+  display: flex; align-items: center; gap: 8px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
+}
+.phone-input button {
+  background: transparent; border: none; color: #99a4ab;
+  width: 36px; height: 36px;
+  font-size: 22px; cursor: pointer;
+}
+.input-box {
+  flex: 1;
+  background: #2a3942;
+  border-radius: 20px;
+  padding: 9px 14px;
+  color: #99a4ab;
+  font-size: 14px;
+  min-height: 38px;
+  display: flex; align-items: center;
+}

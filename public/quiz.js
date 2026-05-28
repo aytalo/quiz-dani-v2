@@ -5,8 +5,7 @@
 const QUIZ = [
   {
     intro: [
-      'Oi! Eu sou a *Dani* 🎡 — vivo de roleta há 3 anos e ajudo quem joga no feeling a parar de queimar banca.',
-      'Bora? São 5 perguntas rápidas pra eu entender seu jogo — no final libero meu app + *FICHAS DOURADAS* pra você começar sem usar seu dinheiro. 🪙',
+      'Oi! Eu sou a *Dani* 🎡 — em 30 segundos eu descubro se você queima banca na roleta no feeling ou se já tem cabeça de estratégia. Passando, libero meu *APP* + *FICHAS DOURADAS* pra você começar a jogar sem usar seu dinheiro. 🪙',
     ],
     question: '*1/5 — Me conta:* quando você senta pra jogar roleta, o que você faz ANTES de apostar a primeira ficha?',
     options: [
@@ -298,11 +297,11 @@ let qIdx = 0;
 
 async function ask(q) {
   if (q.intro) {
-    for (const line of q.intro) await bubbleOther(line, 900);
-    await sleep(200);
+    for (const line of q.intro) await bubbleOther(line, 600);
+    await sleep(150);
   }
-  await bubbleOther(q.question, 1300);
-  await sleep(150);
+  await bubbleOther(q.question, 900);
+  await sleep(120);
 
   await new Promise(resolve => {
     renderOptions(q.options, async (idx, opt) => {
